@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Dog Walker"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/deleteConfirmationMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="80dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp" />
+
+        <Button
+            android:id="@+id/removeConfirmationRemoveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="Remove" />
+
+        <Button
+            android:id="@+id/removeConfirmationCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="#7481FFF0"
+            android:text="Cancel" />
+
+    </RelativeLayout>
+</RelativeLayout>
