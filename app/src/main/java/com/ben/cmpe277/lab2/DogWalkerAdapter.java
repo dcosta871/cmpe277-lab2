@@ -53,7 +53,7 @@ public class DogWalkerAdapter extends RecyclerView.Adapter<DogWalkerAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.personNameTextView.setText(this.dogwalkers.get(position).name);
-        holder.walkCountTextView.setText(String.valueOf(this.dogwalkers.get(position).walkCount) + " dogs walked");
+        holder.walkCountTextView.setText(String.valueOf(this.dogwalkers.get(position).walkCount) + " walks");
         if (position % 2 == 1)
         {
             holder.itemView.setBackgroundColor(Color.parseColor("#F2F2F2"));

@@ -188,14 +188,19 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
 
     @Override
     public void editDogWalkerSelected(DogWalker dogWalker) {
-
+        Intent myIntent = new Intent(getActivity(), EditDogWalkerActivity.class);
+        myIntent.putExtra("dogwalker", dogWalker);
+        getActivity().startActivityForResult(myIntent, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().overridePendingTransition(R.anim.in_right, R.anim.out_left);
+        }
     }
 
     @Override
     public void dogWalkerSelected(DogWalker dogWalker) {
         Intent myIntent = new Intent(getActivity(), ViewDogWalkerActivity.class);
         myIntent.putExtra("dogwalker", dogWalker);
-        startActivity(myIntent);
+        getActivity().startActivity(myIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().overridePendingTransition(R.anim.in_right, R.anim.out_left);
         }

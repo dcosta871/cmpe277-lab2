@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewDogWalkerActivity"></activity>
+        <activity android:name=".EditDogWalkerActivity"/>
+        <activity android:name=".ViewDogWalkerActivity"/>
         <activity android:name=".AddDogWalkerActivity" />
         <activity
             android:name=".MainActivity"

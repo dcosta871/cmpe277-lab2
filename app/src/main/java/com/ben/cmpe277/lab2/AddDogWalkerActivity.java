@@ -26,6 +26,7 @@ import android.widget.Toast;
 public class AddDogWalkerActivity extends AppCompatActivity {
 
     private Button addButton;
+    private Button cancelButton;
     private EditText nameInput;
     private EditText phoneNumberInput;
     private EditText walkCountInputText;
@@ -40,6 +41,7 @@ public class AddDogWalkerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Dog Walker");
         addButton = findViewById(R.id.addAddDogWalkerButton);
+        cancelButton = findViewById(R.id.cancelAddDogWalkerButton);
         nameInput = findViewById(R.id.nameInputText);
         phoneNumberInput = findViewById(R.id.phoneInputText);
         ratingBar = findViewById(R.id.ratingBar);
@@ -86,6 +88,14 @@ public class AddDogWalkerActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 return;
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
+                finish();
             }
         });
     }

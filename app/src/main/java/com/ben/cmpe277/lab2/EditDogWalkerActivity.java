@@ -22,8 +22,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ben.cmpe277.lab2.dogwalker.DogWalker;
 
-public class CopyDogWalkerActivity extends AppCompatActivity {
+
+public class EditDogWalkerActivity extends AppCompatActivity {
 
     private Button addButton;
     private EditText nameInput;
@@ -33,20 +35,32 @@ public class CopyDogWalkerActivity extends AppCompatActivity {
     private CheckBox smallDogCheckBox;
     private CheckBox mediumDogCheckBox;
     private CheckBox largeDogCheckBox;
+    private String originalPhoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_dog_walker);
+        setContentView(R.layout.activity_edit_dog_walker);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add Dog Walker");
-        addButton = findViewById(R.id.addAddDogWalkerButton);
-        nameInput = findViewById(R.id.nameInputText);
-        phoneNumberInput = findViewById(R.id.phoneInputText);
-        ratingBar = findViewById(R.id.ratingBar);
-        walkCountInputText = findViewById(R.id.walkCountInputText);
-        smallDogCheckBox = findViewById(R.id.smallDogCheckBox);
-        mediumDogCheckBox = findViewById(R.id.mediumDogCheckBox);
-        largeDogCheckBox = findViewById(R.id.largeDogCheckBox);
+        getSupportActionBar().setTitle("Edit Dog Walker");
+        DogWalker dogWalker = (DogWalker) getIntent().getSerializableExtra("dogwalker");
+        addButton = findViewById(R.id.editEditDogWalkerButton);
+        nameInput = findViewById(R.id.editNameInputText);
+        phoneNumberInput = findViewById(R.id.editPhoneInputText);
+        ratingBar = findViewById(R.id.editRatingBar);
+        walkCountInputText = findViewById(R.id.editWalkCountInputText);
+        smallDogCheckBox = findViewById(R.id.editSmallDogCheckBox);
+        mediumDogCheckBox = findViewById(R.id.editMediumDogCheckBox);
+        largeDogCheckBox = findViewById(R.id.editLargeDogCheckBox);
+        originalPhoneNumber = dogWalker.phoneNumber;
+
+        nameInput.setText(dogWalker.name);
+        phoneNumberInput.setText(dogWalker.phoneNumber);
+        ratingBar.setRating(dogWalker.rating);
+        walkCountInputText.setText(String.valueOf(dogWalker.walkCount));
+        smallDogCheckBox.setChecked(dogWalker.smallDogs);
+        mediumDogCheckBox.setChecked(dogWalker.mediumDogs);
+        largeDogCheckBox.setChecked(dogWalker.largeDogs);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,11 +80,14 @@ public class CopyDogWalkerActivity extends AppCompatActivity {
                 DogWalkerDbHelper dbHelper = new DogWalkerDbHelper(view.getContext());
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-                if (phoneNumberExists(phoneNumberInput.getText().toString(), db)) {
+                String newStr = phoneNumberInput.getText().toString();
+                if (!originalPhoneNumber.equals(phoneNumberInput.getText().toString()) && phoneNumberExists(phoneNumberInput.getText().toString(), db)) {
                     showErrorToast("Phone number already exists");
                     return;
                 }
 
+                String selection = DogWalkerContract.DogWalkerEntry.COLUMN_NAME_DOGS_PHONE_NUMBER + " LIKE ?";
+                String[] selectionArgs = { originalPhoneNumber };
                 ContentValues values = new ContentValues();
                 values.put(DogWalkerContract.DogWalkerEntry.COLUMN_NAME_NAME, nameInput.getText().toString());
                 values.put(DogWalkerContract.DogWalkerEntry.COLUMN_NAME_DOGS_WALKED, Integer.parseInt(walkCountInputText.getText().toString()));
@@ -79,7 +96,7 @@ public class CopyDogWalkerActivity extends AppCompatActivity {
                 values.put(DogWalkerContract.DogWalkerEntry.COLUMN_SMALL_DOGS, String.valueOf(smallDogCheckBox.isChecked()));
                 values.put(DogWalkerContract.DogWalkerEntry.COLUMN_MEDIUM_DOGS, String.valueOf(mediumDogCheckBox.isChecked()));
                 values.put(DogWalkerContract.DogWalkerEntry.COLUMN_LARGE_DOGS, String.valueOf(largeDogCheckBox.isChecked()));
-                long newRowId = db.insert(DogWalkerContract.DogWalkerEntry.TABLE_NAME, null, values);
+                long newRowId = db.update(DogWalkerContract.DogWalkerEntry.TABLE_NAME, values, selection, selectionArgs);
 
                 dbHelper.close();
                 Intent returnIntent = new Intent();
