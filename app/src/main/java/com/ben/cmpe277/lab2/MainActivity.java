@@ -5,21 +5,15 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.ben.cmpe277.lab2.dogwalker.DogWalker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.InputType;
-import android.widget.EditText;
-import android.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.ben.cmpe277.lab2.dogwalker.DogWalker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity implements DogWalkerListFragment.OnListFragmentInteractionListener, SearchView.OnQueryTextListener, DogWalkerFilterDialog.OnFilterListener {
 
@@ -34,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements DogWalkerListFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements DogWalkerListFrag
     @Override
     public boolean onQueryTextChange(String inputtedText) {
         DogWalkerListFragment dogWalkerListFragment = (DogWalkerListFragment) getSupportFragmentManager().findFragmentById(R.id.dog_walker_fragment);
-        dogWalkerListFragment.onSearchChanged(inputtedText, filterEnabled, smallDogFilter, mediumDogFilter, largeDogFilter, minDogsWalked);
+        dogWalkerListFragment.onSearchChanged(inputtedText, filterEnabled, smallDogFilter, mediumDogFilter, largeDogFilter, minDogsWalked, false);
         this.lastSearch = inputtedText;
         return false;
     }
@@ -120,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements DogWalkerListFrag
         this.largeDogFilter = largeDogs;
         this.minDogsWalked = walkFilter;
         this.filterEnabled = true;
-
-        onQueryTextChange(lastSearch);
+        DogWalkerListFragment dogWalkerListFragment = (DogWalkerListFragment) getSupportFragmentManager().findFragmentById(R.id.dog_walker_fragment);
+        dogWalkerListFragment.onSearchChanged(lastSearch, filterEnabled, smallDogFilter, mediumDogFilter, largeDogFilter, minDogsWalked, true);
     }
 
     @Override

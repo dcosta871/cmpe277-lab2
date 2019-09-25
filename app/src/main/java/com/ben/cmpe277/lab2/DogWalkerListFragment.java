@@ -1,24 +1,22 @@
 package com.ben.cmpe277.lab2;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.BaseColumns;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.BaseColumns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.app.AlertDialog;
 
 import com.ben.cmpe277.lab2.dogwalker.DogWalker;
 
@@ -223,7 +221,7 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
         }
     }
 
-    public void onSearchChanged(String search, boolean filterEnabled, boolean smallDogs, boolean mediumDogs, boolean largeDogs, int minWalkCount) {
+    public void onSearchChanged(String search, boolean filterEnabled, boolean smallDogs, boolean mediumDogs, boolean largeDogs, int minWalkCount, boolean showEmptyDialog) {
         this.dogWalkers = new ArrayList<DogWalker>();
         for (int i = 0; i < this.dogWalkersOriginal.size(); i++) {
             DogWalker dogWalker = this.dogWalkersOriginal.get(i);
@@ -235,7 +233,7 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
         }
         dogWalkerAdapter.setDogWalkers(this.dogWalkers);
         dogWalkerAdapter.notifyDataSetChanged();
-        if (this.dogWalkers.size() == 0) {
+        if (this.dogWalkers.size() == 0 && showEmptyDialog) {
             showNoDogWalkerDialog();
         }
     }

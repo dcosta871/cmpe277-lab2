@@ -1,7 +1,5 @@
 package com.ben.cmpe277.lab2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -21,6 +19,8 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class AddDogWalkerActivity extends AppCompatActivity {
