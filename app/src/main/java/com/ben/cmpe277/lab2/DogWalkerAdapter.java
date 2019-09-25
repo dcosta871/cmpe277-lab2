@@ -17,7 +17,6 @@ public class DogWalkerAdapter extends RecyclerView.Adapter<DogWalkerAdapter.MyVi
     private ArrayList<DogWalker> dogwalkers;
     private DogWalkerListListener dogWalkerListListener;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public TextView personNameTextView;
         public TextView walkCountTextView;
         public FloatingActionButton removeWalkerButton;
@@ -31,13 +30,11 @@ public class DogWalkerAdapter extends RecyclerView.Adapter<DogWalkerAdapter.MyVi
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public DogWalkerAdapter(ArrayList<DogWalker> dogwalkers, DogWalkerListListener dogWalkerListListener) {
         this.dogwalkers = dogwalkers;
         this.dogWalkerListListener = dogWalkerListListener;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public DogWalkerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
@@ -49,7 +46,6 @@ public class DogWalkerAdapter extends RecyclerView.Adapter<DogWalkerAdapter.MyVi
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.personNameTextView.setText(this.dogwalkers.get(position).name);
@@ -82,7 +78,6 @@ public class DogWalkerAdapter extends RecyclerView.Adapter<DogWalkerAdapter.MyVi
         });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return this.dogwalkers.size();

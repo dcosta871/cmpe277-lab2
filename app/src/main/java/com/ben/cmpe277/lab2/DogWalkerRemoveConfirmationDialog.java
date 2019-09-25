@@ -21,7 +21,6 @@ public class DogWalkerRemoveConfirmationDialog extends DialogFragment {
     static DogWalkerRemoveConfirmationDialog newInstance(String phoneNumber, String name, OnDeleteListener deleteListener) {
         DogWalkerRemoveConfirmationDialog f = new DogWalkerRemoveConfirmationDialog();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putString("phoneNumber", phoneNumber);
         args.putString("name", name);

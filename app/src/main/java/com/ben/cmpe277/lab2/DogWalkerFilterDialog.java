@@ -25,7 +25,6 @@ public class DogWalkerFilterDialog extends DialogFragment {
     static DogWalkerFilterDialog newInstance(boolean smallDogs, boolean mediumDogs, boolean largeDogs, int walkFilter, OnFilterListener filterListener) {
         DogWalkerFilterDialog f = new DogWalkerFilterDialog();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putBoolean("smallDogs", smallDogs);
         args.putBoolean("mediumDogs", mediumDogs);

@@ -3,8 +3,6 @@ package com.ben.cmpe277.lab2;
 import android.provider.BaseColumns;
 
 public final class DogWalkerContract {
-    // To prevent someone from accidentally instantiating the contract class,
-    // make the constructor private.
     private DogWalkerContract() {}
 
     /* Inner class that defines the table contents */
