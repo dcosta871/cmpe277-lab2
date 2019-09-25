@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import com.ben.cmpe277.lab2.dogwalker.DogWalker;
 public class EditDogWalkerActivity extends AppCompatActivity {
 
     private Button addButton;
+    private Button cancelButton;
     private EditText nameInput;
     private EditText phoneNumberInput;
     private EditText walkCountInputText;
@@ -41,8 +43,8 @@ public class EditDogWalkerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dog_walker);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Edit Dog Walker");
         DogWalker dogWalker = (DogWalker) getIntent().getSerializableExtra("dogwalker");
+        cancelButton = findViewById(R.id.cancelEditDogWalkerButton);
         addButton = findViewById(R.id.editEditDogWalkerButton);
         nameInput = findViewById(R.id.editNameInputText);
         phoneNumberInput = findViewById(R.id.editPhoneInputText);
@@ -54,6 +56,9 @@ public class EditDogWalkerActivity extends AppCompatActivity {
         originalPhoneNumber = dogWalker.phoneNumber;
 
         nameInput.setText(dogWalker.name);
+
+        getSupportActionBar().setTitle("Edit " + dogWalker.name);
+        nameInput.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         phoneNumberInput.setText(dogWalker.phoneNumber);
         ratingBar.setRating(dogWalker.rating);
         walkCountInputText.setText(String.valueOf(dogWalker.walkCount));
@@ -103,6 +108,15 @@ public class EditDogWalkerActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 return;
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
+                finish();
             }
         });
     }

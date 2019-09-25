@@ -3,8 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ben.cmpe277.lab2.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="101"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:inputType="textNoSuggestions"
+        app:actionViewClass="android.widget.SearchView"/>
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="105"
+        android:title="Filter Dog Walkers" />
+    <item
+        android:id="@+id/action_clear_filter"
+        android:orderInCategory="106"
+        android:title="Clear Filter" />
 </menu>

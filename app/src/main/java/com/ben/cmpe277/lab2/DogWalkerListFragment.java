@@ -1,6 +1,7 @@
 package com.ben.cmpe277.lab2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,7 @@ import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.AlertDialog;
 
 import com.ben.cmpe277.lab2.dogwalker.DogWalker;
 
@@ -36,6 +38,10 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private DogWalkerAdapter dogWalkerAdapter;
+    private ArrayList<DogWalker> dogWalkersOriginal = new ArrayList<DogWalker>();
+    private ArrayList<DogWalker> dogWalkers = new ArrayList<DogWalker>();
+
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -77,7 +83,13 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            dogWalkerAdapter = new DogWalkerAdapter(this.getDogWalkers(), this);
+            getDogWalkers();
+
+            if (this.dogWalkers.size() == 0) {
+                showNoDogWalkerDialog();
+            }
+
+            dogWalkerAdapter = new DogWalkerAdapter(this.dogWalkers, this);
 
             recyclerView.setAdapter(dogWalkerAdapter);
             recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
@@ -119,7 +131,7 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
         void onListFragmentInteraction(DogWalker item);
     }
 
-    public ArrayList<DogWalker> getDogWalkers() {
+    public void getDogWalkers() {
         DogWalkerDbHelper dbHelper = new DogWalkerDbHelper(getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String[] projection = {
@@ -144,24 +156,23 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
                 sortOrder
         );
 
-        ArrayList<DogWalker> dogWalkers = new ArrayList<>();
+        this.dogWalkersOriginal.clear();
         while (cursor.moveToNext()) {
             long itemId = cursor.getColumnIndexOrThrow(DogWalkerContract.DogWalkerEntry._ID);
             String name = cursor.getString(6);
-            dogWalkers.add(new DogWalker(
-                    cursor.getString(1),
+            DogWalker dogWalker = new DogWalker(cursor.getString(1),
                     Integer.valueOf(cursor.getString(2)),
                     cursor.getString(3),
                     cursor.getFloat(4),
                     Boolean.parseBoolean(cursor.getString(5)),
                     Boolean.parseBoolean(cursor.getString(6)),
-                    Boolean.parseBoolean(cursor.getString(7))
-            ));
+                    Boolean.parseBoolean(cursor.getString(7)));
+            this.dogWalkersOriginal.add(dogWalker);
         }
         cursor.close();
 
         dbHelper.close();
-        return dogWalkers;
+        this.dogWalkers = this.dogWalkersOriginal;
     }
 
     private void removeDogWalker(String phoneNumber) {
@@ -176,8 +187,14 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
     }
 
     public void updateDogWalkerList() {
-        dogWalkerAdapter.setDogWalkers(this.getDogWalkers());
+        this.getDogWalkers();
+
+        dogWalkerAdapter.setDogWalkers(this.dogWalkers);
         dogWalkerAdapter.notifyDataSetChanged();
+
+        if (this.dogWalkers.size() == 0) {
+            showNoDogWalkerDialog();
+        }
     }
 
     @Override
@@ -204,6 +221,32 @@ public class DogWalkerListFragment extends Fragment implements DogWalkerAdapter.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().overridePendingTransition(R.anim.in_right, R.anim.out_left);
         }
+    }
+
+    public void onSearchChanged(String search, boolean filterEnabled, boolean smallDogs, boolean mediumDogs, boolean largeDogs, int minWalkCount) {
+        this.dogWalkers = new ArrayList<DogWalker>();
+        for (int i = 0; i < this.dogWalkersOriginal.size(); i++) {
+            DogWalker dogWalker = this.dogWalkersOriginal.get(i);
+            if (dogWalker.name.indexOf(search) > -1 || dogWalker.phoneNumber.indexOf(search) > -1) {
+                if (!filterEnabled || (dogWalker.smallDogs == smallDogs && dogWalker.mediumDogs == mediumDogs && dogWalker.largeDogs == largeDogs && dogWalker.walkCount >= minWalkCount)) {
+                    this.dogWalkers.add(dogWalker);
+                }
+            }
+        }
+        dogWalkerAdapter.setDogWalkers(this.dogWalkers);
+        dogWalkerAdapter.notifyDataSetChanged();
+        if (this.dogWalkers.size() == 0) {
+            showNoDogWalkerDialog();
+        }
+    }
+
+    public void showNoDogWalkerDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("No dog walkers found")
+                .setMessage("Try adding a dog walker, or clearing or modifying the filter")
+                .setPositiveButton(android.R.string.yes, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
